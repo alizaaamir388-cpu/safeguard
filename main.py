@@ -17,8 +17,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# FIXED LINE
-DATABASE_URL = os.environ.get("DATABASE_ PUBLIC_URL", "").replace("postgres://", "postgresql://")
+# FIXED DATABASE CONNECTION
+DATABASE_URL = "postgresql://postgres:CjgXWwGRWOTzPBrQZpjwfxEKSaXEUUrU@yamanote.proxy.rlwy.net:56044/railway"
 
 def get_db():
     conn = psycopg2.connect(DATABASE_URL, sslmode='require', cursor_factory=RealDictCursor)
