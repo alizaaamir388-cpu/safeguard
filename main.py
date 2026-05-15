@@ -17,7 +17,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# FIXED DATABASE CONNECTION
 DATABASE_URL = "postgresql://postgres:CjgXWwGRWOTzPBrQZpjwfxEKSaXEUUrU@yamanote.proxy.rlwy.net:56044/railway"
 
 def get_db():
@@ -68,6 +67,11 @@ class ParentLogin(BaseModel):
 class AddChild(BaseModel):
     parent_token: str
     child_name: str
+    child_age: int
+
+class VideoCheck(BaseModel):
+    video_title: str
+    video_description: str
     child_age: int
 
 @app.get("/")
@@ -142,6 +146,37 @@ def get_children(token: str):
     cur.close()
     conn.close()
     return {"children": children}
+
+@app.post("/video/check")
+def check_video(data: VideoCheck):
+    if not client:
+        raise HTTPException(status_code=500, detail="AI not configured")
+    
+    prompt = f"""You are a parental control AI. 
+A child aged {data.child_age} wants to watch:
+Title: {data.video_title}
+Description: {data.video_description}
+
+Is this video safe for this age? Reply in this exact format:
+SAFE: yes or no
+REASON: one sentence explanation
+WARNING: any specific concerns or 'none'"""
+
+    response = client.chat.completions.create(
+        model="llama3-8b-8192",
+        messages=[{"role": "user", "content": prompt}],
+        max_tokens=200
+    )
+    
+    result = response.choices[0].message.content
+    is_safe = "SAFE: yes" in result.lower()
+    
+    return {
+        "is_safe": is_safe,
+        "age": data.child_age,
+        "video_title": data.video_title,
+        "ai_response": result
+    }
 
 if __name__ == "__main__":
     import uvicorn
