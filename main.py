@@ -17,44 +17,44 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Database connection
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
 def get_db():
-    conn = psycopg2.connect(DATABASE_URL, cursor_factory=RealDictCursor)
+    conn = psycopg2.connect(DATABASE_URL, sslmode='require', cursor_factory=RealDictCursor)
     return conn
 
 def init_db():
-    conn = get_db()
-    cur = conn.cursor()
-    cur.execute("""
-        CREATE TABLE IF NOT EXISTS parents (
-            id SERIAL PRIMARY KEY,
-            name VARCHAR(100),
-            email VARCHAR(100) UNIQUE,
-            password VARCHAR(200),
-            token VARCHAR(200)
-        );
-        CREATE TABLE IF NOT EXISTS children (
-            id SERIAL PRIMARY KEY,
-            parent_id INTEGER REFERENCES parents(id),
-            name VARCHAR(100),
-            age INTEGER
-        );
-    """)
-    conn.commit()
-    cur.close()
-    conn.close()
+    try:
+        conn = get_db()
+        cur = conn.cursor()
+        cur.execute("""
+            CREATE TABLE IF NOT EXISTS parents (
+                id SERIAL PRIMARY KEY,
+                name VARCHAR(100),
+                email VARCHAR(100) UNIQUE,
+                password VARCHAR(200),
+                token VARCHAR(200)
+            );
+            CREATE TABLE IF NOT EXISTS children (
+                id SERIAL PRIMARY KEY,
+                parent_id INTEGER REFERENCES parents(id),
+                name VARCHAR(100),
+                age INTEGER
+            );
+        """)
+        conn.commit()
+        cur.close()
+        conn.close()
+    except Exception as e:
+        print(f"DB init error: {e}")
 
 init_db()
 
-# Groq
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
 client = None
 if GROQ_API_KEY:
     client = Groq(api_key=GROQ_API_KEY)
 
-# Models
 class ParentRegister(BaseModel):
     name: str
     email: str
@@ -69,7 +69,6 @@ class AddChild(BaseModel):
     child_name: str
     child_age: int
 
-# Routes
 @app.get("/")
 def home():
     return {"status": "API running"}
@@ -92,7 +91,7 @@ def register_parent(data: ParentRegister):
         parent_id = cur.fetchone()["id"]
         conn.commit()
         return {"message": "registered", "parent_id": parent_id, "token": token}
-    except Exception as e:
+    except Exception:
         raise HTTPException(status_code=400, detail="Email already exists")
     finally:
         cur.close()
