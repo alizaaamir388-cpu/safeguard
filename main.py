@@ -18,6 +18,8 @@ app.add_middleware(
 )
 
 DATABASE_URL = "postgresql://postgres:CjgXWwGRWOTzPBrQZpjwfxEKSaXEUUrU@yamanote.proxy.rlwy.net:56044/railway"
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
+client = Groq(api_key=GROQ_API_KEY)
 
 def get_db():
     conn = psycopg2.connect(DATABASE_URL, sslmode='require', cursor_factory=RealDictCursor)
@@ -49,11 +51,6 @@ def init_db():
         print(f"DB init error: {e}")
 
 init_db()
-
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
-client = None
-if GROQ_API_KEY:
-    client = Groq(api_key=GROQ_API_KEY)
 
 class ParentRegister(BaseModel):
     name: str
@@ -149,10 +146,7 @@ def get_children(token: str):
 
 @app.post("/video/check")
 def check_video(data: VideoCheck):
-    if not client:
-        raise HTTPException(status_code=500, detail="AI not configured")
-    
-    prompt = f"""You are a parental control AI. 
+    prompt = f"""You are a parental control AI.
 A child aged {data.child_age} wants to watch:
 Title: {data.video_title}
 Description: {data.video_description}
@@ -167,10 +161,10 @@ WARNING: any specific concerns or 'none'"""
         messages=[{"role": "user", "content": prompt}],
         max_tokens=200
     )
-    
+
     result = response.choices[0].message.content
     is_safe = "SAFE: yes" in result.lower()
-    
+
     return {
         "is_safe": is_safe,
         "age": data.child_age,
