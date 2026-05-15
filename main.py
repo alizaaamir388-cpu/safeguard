@@ -1,8 +1,12 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import os
 from groq import Groq
+import psycopg2
+from psycopg2.extras import RealDictCursor
+import hashlib
+import uuid
 
 app = FastAPI(title="SafeGuard API")
 
@@ -13,18 +17,42 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Safe Groq init
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
+# Database connection
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
+def get_db():
+    conn = psycopg2.connect(DATABASE_URL, cursor_factory=RealDictCursor)
+    return conn
+
+def init_db():
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS parents (
+            id SERIAL PRIMARY KEY,
+            name VARCHAR(100),
+            email VARCHAR(100) UNIQUE,
+            password VARCHAR(200),
+            token VARCHAR(200)
+        );
+        CREATE TABLE IF NOT EXISTS children (
+            id SERIAL PRIMARY KEY,
+            parent_id INTEGER REFERENCES parents(id),
+            name VARCHAR(100),
+            age INTEGER
+        );
+    """)
+    conn.commit()
+    cur.close()
+    conn.close()
+
+init_db()
+
+# Groq
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
 client = None
 if GROQ_API_KEY:
     client = Groq(api_key=GROQ_API_KEY)
-
-# In-memory storage
-parents_db = {}
-children_db = {}
-activity_db = {}
-sessions_db = {}
 
 # Models
 class ParentRegister(BaseModel):
@@ -41,36 +69,80 @@ class AddChild(BaseModel):
     child_name: str
     child_age: int
 
-class ChildLogin(BaseModel):
-    child_id: str
-    parent_email: str
-
-# Root route (important for 502 fix)
+# Routes
 @app.get("/")
 def home():
     return {"status": "API running"}
 
-# Health check
 @app.get("/health")
 def health():
     return {"status": "ok"}
 
-# Register parent
 @app.post("/parent/register")
 def register_parent(data: ParentRegister):
-    parent_id = str(len(parents_db) + 1)
+    conn = get_db()
+    cur = conn.cursor()
+    hashed = hashlib.sha256(data.password.encode()).hexdigest()
+    token = str(uuid.uuid4())
+    try:
+        cur.execute(
+            "INSERT INTO parents (name, email, password, token) VALUES (%s, %s, %s, %s) RETURNING id",
+            (data.name, data.email, hashed, token)
+        )
+        parent_id = cur.fetchone()["id"]
+        conn.commit()
+        return {"message": "registered", "parent_id": parent_id, "token": token}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail="Email already exists")
+    finally:
+        cur.close()
+        conn.close()
 
-    parents_db[parent_id] = {
-        "name": data.name,
-        "email": data.email,
-        "password": data.password,
-        "children": []
-    }
+@app.post("/parent/login")
+def login_parent(data: ParentLogin):
+    conn = get_db()
+    cur = conn.cursor()
+    hashed = hashlib.sha256(data.password.encode()).hexdigest()
+    cur.execute("SELECT * FROM parents WHERE email=%s AND password=%s", (data.email, hashed))
+    parent = cur.fetchone()
+    cur.close()
+    conn.close()
+    if not parent:
+        raise HTTPException(status_code=401, detail="Invalid email or password")
+    return {"message": "login successful", "token": parent["token"], "name": parent["name"]}
 
-    return {"message": "registered", "parent_id": parent_id}
+@app.post("/parent/add-child")
+def add_child(data: AddChild):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("SELECT id FROM parents WHERE token=%s", (data.parent_token,))
+    parent = cur.fetchone()
+    if not parent:
+        raise HTTPException(status_code=401, detail="Invalid token")
+    cur.execute(
+        "INSERT INTO children (parent_id, name, age) VALUES (%s, %s, %s) RETURNING id",
+        (parent["id"], data.child_name, data.child_age)
+    )
+    child_id = cur.fetchone()["id"]
+    conn.commit()
+    cur.close()
+    conn.close()
+    return {"message": "child added", "child_id": child_id}
 
+@app.get("/parent/children/{token}")
+def get_children(token: str):
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("SELECT id FROM parents WHERE token=%s", (token,))
+    parent = cur.fetchone()
+    if not parent:
+        raise HTTPException(status_code=401, detail="Invalid token")
+    cur.execute("SELECT * FROM children WHERE parent_id=%s", (parent["id"],))
+    children = cur.fetchall()
+    cur.close()
+    conn.close()
+    return {"children": children}
 
-# ✅ IMPORTANT FIX ADDED HERE
 if __name__ == "__main__":
     import uvicorn
     port = int(os.environ.get("PORT", 8080))
