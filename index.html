@@ -90,10 +90,8 @@ nav{background:white;padding:16px 32px;display:flex;align-items:center;justify-c
 <nav>
   <div class="logo">Safe<span>Guard</span> 🛡️</div>
   <div class="nav-right" id="navRight">
-    <button class="btn btn-outline" onclick="showPage('login')">Login</button>
-    <button class="btn btn-primary" onclick="showPage('register')">Register</button>
-  </div>
-</nav>
+ <button onclick="showPage('login')">Login</button>
+<button onclick="showPage('register')">Register</button>
 <div class="toast" id="toast"></div>
 <div class="page active" id="page-landing">
   <div class="hero">
@@ -103,7 +101,7 @@ nav{background:white;padding:16px 32px;display:flex;align-items:center;justify-c
     <div class="hero-btns">
       <button class="btn btn-white btn-lg" onclick="showPage('register')">Get Started Free</button>
       <button class="btn btn-lg" style="color:white;border:2px solid white;background:transparent" onclick="showPage('login')">Login</button>
-    </div>
+    <button onclick="showPage('register')">Get Started Free</button>
   </div>
   <div class="features">
     <div class="feature-card"><div class="feature-icon">🤖</div><h3>AI Detection</h3><p>Advanced AI checks if any video is safe for your child's age automatically</p></div>
