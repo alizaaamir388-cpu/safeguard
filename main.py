@@ -163,7 +163,7 @@ WARNING: any specific concerns or 'none'"""
     )
 
     result = response.choices[0].message.content
-    is_safe = "SAFE: yes" in result.lower()
+    is_safe = "safe: yes" in result.lower()
 
     return {
         "is_safe": is_safe,
