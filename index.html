@@ -6,7 +6,7 @@
 <title>SafeGuard — Kids Content Protection</title>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap" rel="stylesheet">
 <style>
-:root{--primary:#6C63FF;--secondary:#FF6584;--bg:#F0F4FF;--card:#ffffff;--text:#2D2D48;--muted:#8890A4;--safe:#2ED573;--danger:#FF4757;}
+:root{--primary:#6C63FF;--secondary:#FF6584;--bg:#F0F4FF;--text:#2D2D48;--muted:#8890A4;--safe:#2ED573;--danger:#FF4757;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 nav{background:white;padding:16px 32px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 16px rgba(108,99,255,0.08);position:sticky;top:0;z-index:100;}
@@ -15,7 +15,6 @@ nav{background:white;padding:16px 32px;display:flex;align-items:center;justify-c
 .nav-right{display:flex;gap:10px;}
 .btn{border:none;border-radius:50px;padding:10px 24px;font-family:'Nunito',sans-serif;font-weight:700;font-size:0.95rem;cursor:pointer;transition:all 0.2s;}
 .btn-primary{background:var(--primary);color:white;}
-.btn-primary:hover{background:#5750d4;transform:translateY(-1px);}
 .btn-outline{background:transparent;color:var(--primary);border:2px solid var(--primary);}
 .btn-outline:hover{background:var(--primary);color:white;}
 .btn-white{background:white;color:var(--primary);}
@@ -40,7 +39,7 @@ nav{background:white;padding:16px 32px;display:flex;align-items:center;justify-c
 .auth-card p{color:var(--muted);margin-bottom:28px;}
 .form-group{margin-bottom:18px;}
 .form-group label{display:block;font-weight:700;margin-bottom:6px;font-size:0.9rem;}
-.form-group input,.form-group textarea{width:100%;padding:12px 16px;border:2px solid #E8ECF4;border-radius:12px;font-family:'Nunito',sans-serif;font-size:0.95rem;transition:border 0.2s;outline:none;}
+.form-group input,.form-group textarea{width:100%;padding:12px 16px;border:2px solid #E8ECF4;border-radius:12px;font-family:'Nunito',sans-serif;font-size:0.95rem;outline:none;transition:border 0.2s;}
 .form-group input:focus,.form-group textarea:focus{border-color:var(--primary);}
 .form-group textarea{resize:vertical;min-height:80px;}
 .auth-switch{text-align:center;margin-top:20px;color:var(--muted);font-size:0.9rem;}
@@ -48,17 +47,16 @@ nav{background:white;padding:16px 32px;display:flex;align-items:center;justify-c
 .dashboard{max-width:900px;margin:0 auto;padding:40px 24px;}
 .welcome-banner{background:linear-gradient(135deg,#6C63FF,#a78bfa);color:white;border-radius:20px;padding:32px;margin-bottom:32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;}
 .welcome-banner h2{font-family:'Baloo 2',cursive;font-size:1.8rem;}
-.welcome-banner p{opacity:0.85;margin-top:4px;}
-.dashboard-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-bottom:32px;}
+.dashboard-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;}
 .dash-card{background:white;border-radius:20px;padding:28px;box-shadow:0 4px 20px rgba(108,99,255,0.08);cursor:pointer;transition:all 0.2s;text-align:center;}
-.dash-card:hover{transform:translateY(-4px);box-shadow:0 8px 32px rgba(108,99,255,0.15);}
+.dash-card:hover{transform:translateY(-4px);}
 .dash-icon{font-size:48px;margin-bottom:12px;}
 .dash-card h3{font-weight:800;margin-bottom:6px;}
 .dash-card p{color:var(--muted);font-size:0.88rem;}
 .children-container{max-width:700px;margin:0 auto;padding:40px 24px;}
 .section-title{font-family:'Baloo 2',cursive;font-size:1.8rem;color:var(--primary);margin-bottom:24px;}
 .child-card{background:white;border-radius:16px;padding:20px 24px;margin-bottom:16px;display:flex;align-items:center;gap:16px;box-shadow:0 4px 16px rgba(108,99,255,0.07);}
-.child-avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#6C63FF,#FF6584);display:flex;align-items:center;justify-content:center;font-size:24px;color:white;font-weight:800;flex-shrink:0;}
+.child-avatar{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#6C63FF,#FF6584);display:flex;align-items:center;justify-content:center;font-size:24px;color:white;font-weight:800;}
 .child-info h3{font-weight:800;}
 .child-info p{color:var(--muted);font-size:0.88rem;}
 .add-child-form{background:white;border-radius:20px;padding:32px;box-shadow:0 4px 20px rgba(108,99,255,0.08);margin-top:24px;}
@@ -69,16 +67,15 @@ nav{background:white;padding:16px 32px;display:flex;align-items:center;justify-c
 .video-form p{color:var(--muted);margin-bottom:28px;}
 .result-container{max-width:560px;margin:0 auto;padding:40px 24px;}
 .result-card{background:white;border-radius:24px;padding:40px;text-align:center;box-shadow:0 8px 40px rgba(108,99,255,0.12);}
-.result-icon{font-size:80px;margin-bottom:20px;animation:pop 0.4s ease;}
-@keyframes pop{0%{transform:scale(0)}80%{transform:scale(1.1)}100%{transform:scale(1)}}
+.result-icon{font-size:80px;margin-bottom:20px;}
 .result-card h2{font-family:'Baloo 2',cursive;font-size:2rem;margin-bottom:12px;}
 .result-safe{color:var(--safe);}.result-unsafe{color:var(--danger);}
 .result-badge{display:inline-block;padding:8px 24px;border-radius:50px;font-weight:800;font-size:1.1rem;margin-bottom:20px;}
 .badge-safe{background:#E8FFF3;color:var(--safe);}.badge-unsafe{background:#FFF0F0;color:var(--danger);}
 .result-details{background:var(--bg);border-radius:16px;padding:20px;text-align:left;margin:20px 0;}
-.result-details p{font-size:0.92rem;line-height:1.6;color:var(--text);margin-bottom:8px;}
+.result-details p{font-size:0.92rem;line-height:1.6;margin-bottom:8px;}
 .result-details strong{color:var(--primary);}
-.toast{position:fixed;bottom:24px;right:24px;background:#2D2D48;color:white;padding:14px 24px;border-radius:12px;font-weight:700;font-size:0.9rem;box-shadow:0 8px 24px rgba(0,0,0,0.2);z-index:9999;display:none;}
+.toast{position:fixed;bottom:24px;right:24px;background:#2D2D48;color:white;padding:14px 24px;border-radius:12px;font-weight:700;font-size:0.9rem;z-index:9999;display:none;}
 .loading{display:inline-block;width:18px;height:18px;border:3px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin 0.8s linear infinite;vertical-align:middle;margin-right:8px;}
 @keyframes spin{to{transform:rotate(360deg)}}
 .back-btn{background:none;border:none;color:var(--primary);font-weight:700;font-family:'Nunito',sans-serif;font-size:0.95rem;cursor:pointer;margin-bottom:20px;display:flex;align-items:center;gap:6px;}
@@ -87,7 +84,6 @@ nav{background:white;padding:16px 32px;display:flex;align-items:center;justify-c
 </style>
 </head>
 <body>
-
 <nav>
   <div class="logo">Safe<span>Guard</span> 🛡️</div>
   <div class="nav-right" id="navRight">
@@ -95,9 +91,7 @@ nav{background:white;padding:16px 32px;display:flex;align-items:center;justify-c
     <button class="btn btn-primary" onclick="showPage('register')">Register</button>
   </div>
 </nav>
-
 <div class="toast" id="toast"></div>
-
 <div class="page active" id="page-landing">
   <div class="hero">
     <div class="hero-icon">🛡️</div>
@@ -114,7 +108,6 @@ nav{background:white;padding:16px 32px;display:flex;align-items:center;justify-c
     <div class="feature-card"><div class="feature-icon">⚠️</div><h3>Instant Warnings</h3><p>Get instant safe/unsafe results with detailed reasons and warnings</p></div>
   </div>
 </div>
-
 <div class="page" id="page-register">
   <div class="auth-container"><div class="auth-card">
     <h2>👋 Create Account</h2><p>Register as a parent to protect your children</p>
@@ -126,7 +119,6 @@ nav{background:white;padding:16px 32px;display:flex;align-items:center;justify-c
     <div class="auth-switch">Already have account? <a onclick="showPage('login')">Login here</a></div>
   </div></div>
 </div>
-
 <div class="page" id="page-login">
   <div class="auth-container"><div class="auth-card">
     <h2>🔐 Welcome Back!</h2><p>Login to your SafeGuard account</p>
@@ -137,11 +129,10 @@ nav{background:white;padding:16px 32px;display:flex;align-items:center;justify-c
     <div class="auth-switch">New here? <a onclick="showPage('register')">Create account</a></div>
   </div></div>
 </div>
-
 <div class="page" id="page-dashboard">
   <div class="dashboard">
     <div class="welcome-banner">
-      <div><h2>Welcome back! 👋</h2><p id="welcome-name">Loading...</p></div>
+      <div><h2>Welcome back! 👋</h2><p id="welcome-name"></p></div>
       <button class="btn btn-white" onclick="logout()">Logout</button>
     </div>
     <div class="dashboard-grid">
@@ -150,7 +141,6 @@ nav{background:white;padding:16px 32px;display:flex;align-items:center;justify-c
     </div>
   </div>
 </div>
-
 <div class="page" id="page-children">
   <div class="children-container">
     <button class="back-btn" onclick="showPage('dashboard')">← Back</button>
@@ -166,21 +156,19 @@ nav{background:white;padding:16px 32px;display:flex;align-items:center;justify-c
     </div>
   </div>
 </div>
-
 <div class="page" id="page-videocheck">
   <div class="video-container">
     <button class="back-btn" onclick="showPage('dashboard')">← Back</button>
     <div class="video-form">
-      <h2>🎬 Check Video Safety</h2><p>Enter video details — AI will decide if it's safe!</p>
+      <h2>🎬 Check Video Safety</h2><p>AI will decide if it's safe!</p>
       <div class="error-msg" id="video-error"></div>
-      <div class="form-group"><label>Video Title</label><input type="text" id="video-title" placeholder="e.g. Peppa Pig Season 1"></div>
-      <div class="form-group"><label>Video Description</label><textarea id="video-desc" placeholder="Describe what the video is about..."></textarea></div>
+      <div class="form-group"><label>Video Title</label><input type="text" id="video-title" placeholder="e.g. Peppa Pig"></div>
+      <div class="form-group"><label>Video Description</label><textarea id="video-desc" placeholder="Describe the video..."></textarea></div>
       <div class="form-group"><label>Child's Age</label><input type="number" id="video-age" placeholder="e.g. 5" min="1" max="17"></div>
       <button class="btn btn-primary btn-block" onclick="checkVideo()" id="video-btn">🤖 Check with AI</button>
     </div>
   </div>
 </div>
-
 <div class="page" id="page-result">
   <div class="result-container">
     <button class="back-btn" onclick="showPage('videocheck')">← Check Another</button>
@@ -193,151 +181,154 @@ nav{background:white;padding:16px 32px;display:flex;align-items:center;justify-c
     </div>
   </div>
 </div>
-
 <script>
-const API = 'https://safeguard-production-cd25.up.railway.app';
-let token = localStorage.getItem('sg_token');
-let parentName = localStorage.getItem('sg_name');
+const API='https://safeguard-production-cd25.up.railway.app';
+let token=localStorage.getItem('sg_token');
+let parentName=localStorage.getItem('sg_name');
 
-function showPage(page) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-' + page).classList.add('active');
-  window.scrollTo(0, 0);
-  if (page === 'children') loadChildren();
+function showPage(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  window.scrollTo(0,0);
+  if(page==='children') loadChildren();
 }
 
-function showToast(msg, color='#2D2D48') {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.style.background = color;
-  t.style.display = 'block';
-  setTimeout(() => t.style.display = 'none', 3000);
+function showToast(msg,color='#2D2D48'){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.style.background=color;t.style.display='block';
+  setTimeout(()=>t.style.display='none',3000);
 }
 
-function showError(id, msg) {
-  const el = document.getElementById(id);
-  el.textContent = msg;
-  el.style.display = 'block';
+function showError(id,msg){
+  const el=document.getElementById(id);
+  el.textContent=msg;el.style.display='block';
 }
 
-function hideError(id) {
-  document.getElementById(id).style.display = 'none';
+function hideError(id){document.getElementById(id).style.display='none';}
+
+function showSuccess(id,msg){
+  const el=document.getElementById(id);
+  el.textContent=msg;el.style.display='block';
 }
 
-function showSuccess(id, msg) {
-  const el = document.getElementById(id);
-  el.textContent = msg;
-  el.style.display = 'block';
-}
-
-function updateNav(loggedIn) {
-  const nav = document.getElementById('navRight');
-  if (loggedIn) {
-    nav.innerHTML = `<button class="btn btn-outline" onclick="showPage('dashboard')">Dashboard</button><button class="btn btn-primary" onclick="logout()">Logout</button>`;
+function updateNav(loggedIn){
+  const nav=document.getElementById('navRight');
+  if(loggedIn){
+    nav.innerHTML='<button class="btn btn-outline" onclick="showPage(\'dashboard\')">Dashboard</button><button class="btn btn-primary" onclick="logout()">Logout</button>';
   } else {
-    nav.innerHTML = `<button class="btn btn-outline" onclick="showPage('login')">Login</button><button class="btn btn-primary" onclick="showPage('register')">Register</button>`;
+    nav.innerHTML='<button class="btn btn-outline" onclick="showPage(\'login\')">Login</button><button class="btn btn-primary" onclick="showPage(\'register\')">Register</button>';
   }
 }
 
-if (token) {
+if(token){
   updateNav(true);
   showPage('dashboard');
-  document.getElementById('welcome-name').textContent = 'Logged in as: ' + (parentName || 'Parent');
+  document.getElementById('welcome-name').textContent='Logged in as: '+(parentName||'Parent');
 }
 
-async function registerParent() {
+async function registerParent(){
   hideError('reg-error');
-  const name = document.getElementById('reg-name').value.trim();
-  const email = document.getElementById('reg-email').value.trim();
-  const password = document.getElementById('reg-password').value;
-  if (!name || !email || !password) return showError('reg-error', 'Please fill all fields!');
-  if (password.length < 6) return showError('reg-error', 'Password must be 6+ characters!');
-  const btn = document.getElementById('reg-btn');
-  btn.innerHTML = '<span class="loading"></span>Creating...';
-  btn.disabled = true;
-  try {
-    const res = await fetch(API + '/parent/register', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({name, email, password})});
-    const data = await res.json();
-    if (res.ok) {
-      token = data.token; parentName = name;
-      localStorage.setItem('sg_token', token);
-      localStorage.setItem('sg_name', name);
+  const name=document.getElementById('reg-name').value.trim();
+  const email=document.getElementById('reg-email').value.trim();
+  const password=document.getElementById('reg-password').value;
+  if(!name||!email||!password) return showError('reg-error','Please fill all fields!');
+  if(password.length<6) return showError('reg-error','Password must be 6+ characters!');
+  const btn=document.getElementById('reg-btn');
+  btn.innerHTML='<span class="loading"></span>Creating...';btn.disabled=true;
+  try{
+    const res=await fetch(API+'/parent/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,email,password})});
+    const data=await res.json();
+    if(res.ok){
+      token=data.token;parentName=name;
+      localStorage.setItem('sg_token',token);localStorage.setItem('sg_name',name);
       updateNav(true);
-      document.getElementById('welcome-name').textContent = 'Logged in as: ' + name;
-      showToast('Welcome ' + name + '! 🎉', '#2ED573');
+      document.getElementById('welcome-name').textContent='Logged in as: '+name;
+      showToast('Welcome '+name+'! 🎉','#2ED573');
       showPage('dashboard');
-    } else { showError('reg-error', data.detail || 'Registration failed!'); }
-  } catch(e) { showError('reg-error', 'Connection error!'); }
-  btn.innerHTML = 'Create Account'; btn.disabled = false;
+    } else {showError('reg-error',data.detail||'Registration failed!');}
+  } catch(e){showError('reg-error','Connection error!');}
+  btn.innerHTML='Create Account';btn.disabled=false;
 }
 
-async function loginParent() {
+async function loginParent(){
   hideError('login-error');
-  const email = document.getElementById('login-email').value.trim();
-  const password = document.getElementById('login-password').value;
-  if (!email || !password) return showError('login-error', 'Please fill all fields!');
-  const btn = document.getElementById('login-btn');
-  btn.innerHTML = '<span class="loading"></span>Logging in...';
-  btn.disabled = true;
-  try {
-    const res = await fetch(API + '/parent/login', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email, password})});
-    const data = await res.json();
-    if (res.ok) {
-      token = data.token; parentName = data.name;
-      localStorage.setItem('sg_token', token);
-      localStorage.setItem('sg_name', data.name);
+  const email=document.getElementById('login-email').value.trim();
+  const password=document.getElementById('login-password').value;
+  if(!email||!password) return showError('login-error','Please fill all fields!');
+  const btn=document.getElementById('login-btn');
+  btn.innerHTML='<span class="loading"></span>Logging in...';btn.disabled=true;
+  try{
+    const res=await fetch(API+'/parent/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});
+    const data=await res.json();
+    if(res.ok){
+      token=data.token;parentName=data.name;
+      localStorage.setItem('sg_token',token);localStorage.setItem('sg_name',data.name);
       updateNav(true);
-      document.getElementById('welcome-name').textContent = 'Logged in as: ' + data.name;
-      showToast('Welcome back ' + data.name + '! 👋', '#6C63FF');
+      document.getElementById('welcome-name').textContent='Logged in as: '+data.name;
+      showToast('Welcome back '+data.name+'! 👋','#6C63FF');
       showPage('dashboard');
-    } else { showError('login-error', data.detail || 'Invalid email or password!'); }
-  } catch(e) { showError('login-error', 'Connection error!'); }
-  btn.innerHTML = 'Login'; btn.disabled = false;
+    } else {showError('login-error',data.detail||'Invalid email or password!');}
+  } catch(e){showError('login-error','Connection error!');}
+  btn.innerHTML='Login';btn.disabled=false;
 }
 
-async function addChild() {
+async function addChild(){
   hideError('child-error');
-  document.getElementById('child-success').style.display = 'none';
-  const name = document.getElementById('child-name').value.trim();
-  const age = parseInt(document.getElementById('child-age').value);
-  if (!name || !age) return showError('child-error', 'Please fill all fields!');
-  if (age < 1 || age > 17) return showError('child-error', 'Age must be 1-17!');
-  const btn = document.getElementById('child-btn');
-  btn.innerHTML = '<span class="loading"></span>Adding...';
-  btn.disabled = true;
-  try {
-    const res = await fetch(API + '/parent/add-child', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({parent_token: token, child_name: name, child_age: age})});
-    const data = await res.json();
-    if (res.ok) {
-      showSuccess('child-success', name + ' added! 🎉');
-      document.getElementById('child-name').value = '';
-      document.getElementById('child-age').value = '';
+  document.getElementById('child-success').style.display='none';
+  const name=document.getElementById('child-name').value.trim();
+  const age=parseInt(document.getElementById('child-age').value);
+  if(!name||!age) return showError('child-error','Please fill all fields!');
+  if(age<1||age>17) return showError('child-error','Age must be 1-17!');
+  const btn=document.getElementById('child-btn');
+  btn.innerHTML='<span class="loading"></span>Adding...';btn.disabled=true;
+  try{
+    const res=await fetch(API+'/parent/add-child',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({parent_token:token,child_name:name,child_age:age})});
+    const data=await res.json();
+    if(res.ok){
+      showSuccess('child-success',name+' added! 🎉');
+      document.getElementById('child-name').value='';
+      document.getElementById('child-age').value='';
       loadChildren();
-      showToast(name + ' added! 👶', '#2ED573');
-    } else { showError('child-error', data.detail || 'Failed!'); }
-  } catch(e) { showError('child-error', 'Connection error!'); }
-  btn.innerHTML = 'Add Child'; btn.disabled = false;
+      showToast(name+' added! 👶','#2ED573');
+    } else {showError('child-error',data.detail||'Failed!');}
+  } catch(e){showError('child-error','Connection error!');}
+  btn.innerHTML='Add Child';btn.disabled=false;
 }
 
-async function loadChildren() {
-  if (!token) return;
-  const list = document.getElementById('children-list');
-  list.innerHTML = '<p style="color:var(--muted);text-align:center">Loading...</p>';
-  try {
-    const res = await fetch(API + '/parent/children/' + token);
-    const data = await res.json();
-    if (data.children && data.children.length > 0) {
-      list.innerHTML = data.children.map(c => `<div class="child-card"><div class="child-avatar">${c.name[0].toUpperCase()}</div><div class="child-info"><h3>${c.name}</h3><p>Age: ${c.age} years old</p></div></div>`).join('');
+async function loadChildren(){
+  if(!token) return;
+  const list=document.getElementById('children-list');
+  list.innerHTML='<p style="color:var(--muted);text-align:center">Loading...</p>';
+  try{
+    const res=await fetch(API+'/parent/children/'+token);
+    const data=await res.json();
+    if(data.children&&data.children.length>0){
+      list.innerHTML=data.children.map(c=>`<div class="child-card"><div class="child-avatar">${c.name[0].toUpperCase()}</div><div class="child-info"><h3>${c.name}</h3><p>Age: ${c.age} years old</p></div></div>`).join('');
     } else {
-      list.innerHTML = '<p style="color:var(--muted);text-align:center;padding:20px">No children added yet! 👇</p>';
+      list.innerHTML='<p style="color:var(--muted);text-align:center;padding:20px">No children added yet! 👇</p>';
     }
-  } catch(e) { list.innerHTML = ''; }
+  } catch(e){list.innerHTML='';}
 }
 
-async function checkVideo() {
+async function checkVideo(){
   hideError('video-error');
-  const title = document.getElementById('video-title').value.trim();
-  const desc = document.getElementById('video-desc').value.trim();
-  const age = parseInt(document.getElementById('video-age').value);
-  if (!title || !desc || !age) return showError('video-error', 'Please fill all fields!');
-  const btn = document.ge
+  const title=document.getElementById('video-title').value.trim();
+  const desc=document.getElementById('video-desc').value.trim();
+  const age=parseInt(document.getElementById('video-age').value);
+  if(!title||!desc||!age) return showError('video-error','Please fill all fields!');
+  const btn=document.getElementById('video-btn');
+  btn.innerHTML='<span class="loading"></span>AI is checking...';btn.disabled=true;
+  try{
+    const res=await fetch(API+'/video/check',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({video_title:title,video_description:desc,child_age:age})});
+    const data=await res.json();
+    if(res.ok){showResult(data);}
+    else{showError('video-error','Check failed!');}
+  } catch(e){showError('video-error','Connection error!');}
+  btn.innerHTML='🤖 Check with AI';btn.disabled=false;
+}
+
+function showResult(data){
+  const isSafe=data.is_safe;
+  document.getElementById('result-icon').textContent=isSafe?'✅':'🚫';
+  document.getElementById('result-title').textContent=isSafe?'Safe for your child!':'Not Recommended!';
+  document
