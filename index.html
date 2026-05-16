@@ -87,12 +87,17 @@ nav{background:white;padding:16px 32px;display:flex;align-items:center;justify-c
 </style>
 </head>
 <body>
+
 <nav>
   <div class="logo">Safe<span>Guard</span> 🛡️</div>
   <div class="nav-right" id="navRight">
- <button onclick="showPage('login')">Login</button>
-<button onclick="showPage('register')">Register</button>
+    <button class="btn btn-outline" onclick="showPage('login')">Login</button>
+    <button class="btn btn-primary" onclick="showPage('register')">Register</button>
+  </div>
+</nav>
+
 <div class="toast" id="toast"></div>
+
 <div class="page active" id="page-landing">
   <div class="hero">
     <div class="hero-icon">🛡️</div>
@@ -101,7 +106,7 @@ nav{background:white;padding:16px 32px;display:flex;align-items:center;justify-c
     <div class="hero-btns">
       <button class="btn btn-white btn-lg" onclick="showPage('register')">Get Started Free</button>
       <button class="btn btn-lg" style="color:white;border:2px solid white;background:transparent" onclick="showPage('login')">Login</button>
-    <button onclick="showPage('register')">Get Started Free</button>
+    </div>
   </div>
   <div class="features">
     <div class="feature-card"><div class="feature-icon">🤖</div><h3>AI Detection</h3><p>Advanced AI checks if any video is safe for your child's age automatically</p></div>
@@ -109,6 +114,7 @@ nav{background:white;padding:16px 32px;display:flex;align-items:center;justify-c
     <div class="feature-card"><div class="feature-icon">⚠️</div><h3>Instant Warnings</h3><p>Get instant safe/unsafe results with detailed reasons and warnings</p></div>
   </div>
 </div>
+
 <div class="page" id="page-register">
   <div class="auth-container"><div class="auth-card">
     <h2>👋 Create Account</h2><p>Register as a parent to protect your children</p>
@@ -120,6 +126,7 @@ nav{background:white;padding:16px 32px;display:flex;align-items:center;justify-c
     <div class="auth-switch">Already have account? <a onclick="showPage('login')">Login here</a></div>
   </div></div>
 </div>
+
 <div class="page" id="page-login">
   <div class="auth-container"><div class="auth-card">
     <h2>🔐 Welcome Back!</h2><p>Login to your SafeGuard account</p>
@@ -130,6 +137,7 @@ nav{background:white;padding:16px 32px;display:flex;align-items:center;justify-c
     <div class="auth-switch">New here? <a onclick="showPage('register')">Create account</a></div>
   </div></div>
 </div>
+
 <div class="page" id="page-dashboard">
   <div class="dashboard">
     <div class="welcome-banner">
@@ -142,6 +150,7 @@ nav{background:white;padding:16px 32px;display:flex;align-items:center;justify-c
     </div>
   </div>
 </div>
+
 <div class="page" id="page-children">
   <div class="children-container">
     <button class="back-btn" onclick="showPage('dashboard')">← Back</button>
@@ -157,6 +166,7 @@ nav{background:white;padding:16px 32px;display:flex;align-items:center;justify-c
     </div>
   </div>
 </div>
+
 <div class="page" id="page-videocheck">
   <div class="video-container">
     <button class="back-btn" onclick="showPage('dashboard')">← Back</button>
@@ -170,6 +180,7 @@ nav{background:white;padding:16px 32px;display:flex;align-items:center;justify-c
     </div>
   </div>
 </div>
+
 <div class="page" id="page-result">
   <div class="result-container">
     <button class="back-btn" onclick="showPage('videocheck')">← Check Another</button>
@@ -182,20 +193,151 @@ nav{background:white;padding:16px 32px;display:flex;align-items:center;justify-c
     </div>
   </div>
 </div>
+
 <script>
-const API='https://safeguard-production-cd25.up.railway.app';
-let token=localStorage.getItem('sg_token');
-let parentName=localStorage.getItem('sg_name');
-function showPage(page){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.getElementById('page-'+page).classList.add('active');window.scrollTo(0,0);if(page==='children')loadChildren();}
-function showToast(msg,color='#2D2D48'){const t=document.getElementById('toast');t.textContent=msg;t.style.background=color;t.style.display='block';setTimeout(()=>t.style.display='none',3000);}
-function showError(id,msg){const el=document.getElementById(id);el.textContent=msg;el.style.display='block';}
-function hideError(id){document.getElementById(id).style.display='none';}
-function showSuccess(id,msg){const el=document.getElementById(id);el.textContent=msg;el.style.display='block';}
-if(token){updateNav(true);showPage('dashboard');document.getElementById('welcome-name').textContent='Logged in as: '+(parentName||'Parent');}
-function updateNav(loggedIn){const nav=document.getElementById('navRight');if(loggedIn){nav.innerHTML=`<button class="btn btn-outline" onclick="showPage('dashboard')">Dashboard</button><button class="btn btn-primary" onclick="logout()">Logout</button>`;}else{nav.innerHTML=`<button class="btn btn-outline" onclick="showPage('login')">Login</button><button class="btn btn-primary" onclick="showPage('register')">Register</button>`;}}
-async function registerParent(){hideError('reg-error');const name=document.getElementById('reg-name').value.trim();const email=document.getElementById('reg-email').value.trim();const password=document.getElementById('reg-password').value;if(!name||!email||!password)return showError('reg-error','Please fill all fields!');if(password.length<6)return showError('reg-error','Password must be 6+ characters!');const btn=document.getElementById('reg-btn');btn.innerHTML='<span class="loading"></span>Creating...';btn.disabled=true;try{const res=await fetch(API+'/parent/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name,email,password})});const data=await res.json();if(res.ok){token=data.token;parentName=name;localStorage.setItem('sg_token',token);localStorage.setItem('sg_name',name);updateNav(true);document.getElementById('welcome-name').textContent='Logged in as: '+name;showToast('Welcome '+name+'! 🎉','#2ED573');showPage('dashboard');}else{showError('reg-error',data.detail||'Registration failed!');}}catch(e){showError('reg-error','Connection error!');}btn.innerHTML='Create Account';btn.disabled=false;}
-async function loginParent(){hideError('login-error');const email=document.getElementById('login-email').value.trim();const password=document.getElementById('login-password').value;if(!email||!password)return showError('login-error','Please fill all fields!');const btn=document.getElementById('login-btn');btn.innerHTML='<span class="loading"></span>Logging in...';btn.disabled=true;try{const res=await fetch(API+'/parent/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,password})});const data=await res.json();if(res.ok){token=data.token;parentName=data.name;localStorage.setItem('sg_token',token);localStorage.setItem('sg_name',data.name);updateNav(true);document.getElementById('welcome-name').textContent='Logged in as: '+data.name;showToast('Welcome back '+data.name+'! 👋','#6C63FF');showPage('dashboard');}else{showError('login-error',data.detail||'Invalid email or password!');}}catch(e){showError('login-error','Connection error!');}btn.innerHTML='Login';btn.disabled=false;}
-async function addChild(){hideError('child-error');document.getElementById('child-success').style.display='none';const name=document.getElementById('child-name').value.trim();const age=parseInt(document.getElementById('child-age').value);if(!name||!age)return showError('child-error','Please fill all fields!');if(age<1||age>17)return showError('child-error','Age must be 1-17!');const btn=document.getElementById('child-btn');btn.innerHTML='<span class="loading"></span>Adding...';btn.disabled=true;try{const res=await fetch(API+'/parent/add-child',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({parent_token:token,child_name:name,child_age:age})});const data=await res.json();if(res.ok){showSuccess('child-success',name+' added! 🎉');document.getElementById('child-name').value='';document.getElementById('child-age').value='';loadChildren();showToast(name+' added! 👶','#2ED573');}else{showError('child-error',data.detail||'Failed!');}}catch(e){showError('child-error','Connection error!');}btn.innerHTML='Add Child';btn.disabled=false;}
-async function loadChildren(){if(!token)return;const list=document.getElementById('children-list');list.innerHTML='<p style="color:var(--muted);text-align:center">Loading...</p>';try{const res=await fetch(API+'/parent/children/'+token);const data=await res.json();if(data.children&&data.children.length>0){list.innerHTML=data.children.map(c=>`<div class="child-card"><div class="child-avatar">${c.name[0].toUpperCase()}</div><div class="child-info"><h3>${c.name}</h3><p>Age: ${c.age} years old</p></div></div>`).join('');}else{list.innerHTML='<p style="color:var(--muted);text-align:center;padding:20px">No children added yet! 👇</p>';}}catch(e){list.innerHTML='';}}
-async function checkVideo(){hideError('video-error');const title=document.getElementById('video-title').value.trim();const desc=document.getElementById('video-desc').value.trim();const age=parseInt(document.getElementById('video-age').value);if(!title||!desc||!age)return showError('video-error','Please fill all fields!');const btn=document.getElementById('video-btn');btn.innerHTML='<span class="loading"></span>AI is checking...';btn.disabled=true;try{const res=await fetch(API+'/video/check',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({video_title:title,video_description:desc,child_age:age})});const data=await res.json();if(res.ok){showResult(data);}else{showError('video-error','Check failed!');}}catch(e){showError('video-error','Connection error!');}btn.innerHTML='🤖 Check with AI';btn.disabled=false;}
-function showResult(data){const isSafe=data.is_safe;document.getElementById('result-icon').textContent=isSafe?'✅':'🚫';document.getElementById('result-title').textContent=isSafe?'Safe for your child!':'Not Recommended!';document.getElementById('result-title').className=isSafe?'result-safe':'result-unsa
+const API = 'https://safeguard-production-cd25.up.railway.app';
+let token = localStorage.getItem('sg_token');
+let parentName = localStorage.getItem('sg_name');
+
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  window.scrollTo(0, 0);
+  if (page === 'children') loadChildren();
+}
+
+function showToast(msg, color='#2D2D48') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = color;
+  t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 3000);
+}
+
+function showError(id, msg) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+function hideError(id) {
+  document.getElementById(id).style.display = 'none';
+}
+
+function showSuccess(id, msg) {
+  const el = document.getElementById(id);
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+function updateNav(loggedIn) {
+  const nav = document.getElementById('navRight');
+  if (loggedIn) {
+    nav.innerHTML = `<button class="btn btn-outline" onclick="showPage('dashboard')">Dashboard</button><button class="btn btn-primary" onclick="logout()">Logout</button>`;
+  } else {
+    nav.innerHTML = `<button class="btn btn-outline" onclick="showPage('login')">Login</button><button class="btn btn-primary" onclick="showPage('register')">Register</button>`;
+  }
+}
+
+if (token) {
+  updateNav(true);
+  showPage('dashboard');
+  document.getElementById('welcome-name').textContent = 'Logged in as: ' + (parentName || 'Parent');
+}
+
+async function registerParent() {
+  hideError('reg-error');
+  const name = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const password = document.getElementById('reg-password').value;
+  if (!name || !email || !password) return showError('reg-error', 'Please fill all fields!');
+  if (password.length < 6) return showError('reg-error', 'Password must be 6+ characters!');
+  const btn = document.getElementById('reg-btn');
+  btn.innerHTML = '<span class="loading"></span>Creating...';
+  btn.disabled = true;
+  try {
+    const res = await fetch(API + '/parent/register', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({name, email, password})});
+    const data = await res.json();
+    if (res.ok) {
+      token = data.token; parentName = name;
+      localStorage.setItem('sg_token', token);
+      localStorage.setItem('sg_name', name);
+      updateNav(true);
+      document.getElementById('welcome-name').textContent = 'Logged in as: ' + name;
+      showToast('Welcome ' + name + '! 🎉', '#2ED573');
+      showPage('dashboard');
+    } else { showError('reg-error', data.detail || 'Registration failed!'); }
+  } catch(e) { showError('reg-error', 'Connection error!'); }
+  btn.innerHTML = 'Create Account'; btn.disabled = false;
+}
+
+async function loginParent() {
+  hideError('login-error');
+  const email = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+  if (!email || !password) return showError('login-error', 'Please fill all fields!');
+  const btn = document.getElementById('login-btn');
+  btn.innerHTML = '<span class="loading"></span>Logging in...';
+  btn.disabled = true;
+  try {
+    const res = await fetch(API + '/parent/login', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email, password})});
+    const data = await res.json();
+    if (res.ok) {
+      token = data.token; parentName = data.name;
+      localStorage.setItem('sg_token', token);
+      localStorage.setItem('sg_name', data.name);
+      updateNav(true);
+      document.getElementById('welcome-name').textContent = 'Logged in as: ' + data.name;
+      showToast('Welcome back ' + data.name + '! 👋', '#6C63FF');
+      showPage('dashboard');
+    } else { showError('login-error', data.detail || 'Invalid email or password!'); }
+  } catch(e) { showError('login-error', 'Connection error!'); }
+  btn.innerHTML = 'Login'; btn.disabled = false;
+}
+
+async function addChild() {
+  hideError('child-error');
+  document.getElementById('child-success').style.display = 'none';
+  const name = document.getElementById('child-name').value.trim();
+  const age = parseInt(document.getElementById('child-age').value);
+  if (!name || !age) return showError('child-error', 'Please fill all fields!');
+  if (age < 1 || age > 17) return showError('child-error', 'Age must be 1-17!');
+  const btn = document.getElementById('child-btn');
+  btn.innerHTML = '<span class="loading"></span>Adding...';
+  btn.disabled = true;
+  try {
+    const res = await fetch(API + '/parent/add-child', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({parent_token: token, child_name: name, child_age: age})});
+    const data = await res.json();
+    if (res.ok) {
+      showSuccess('child-success', name + ' added! 🎉');
+      document.getElementById('child-name').value = '';
+      document.getElementById('child-age').value = '';
+      loadChildren();
+      showToast(name + ' added! 👶', '#2ED573');
+    } else { showError('child-error', data.detail || 'Failed!'); }
+  } catch(e) { showError('child-error', 'Connection error!'); }
+  btn.innerHTML = 'Add Child'; btn.disabled = false;
+}
+
+async function loadChildren() {
+  if (!token) return;
+  const list = document.getElementById('children-list');
+  list.innerHTML = '<p style="color:var(--muted);text-align:center">Loading...</p>';
+  try {
+    const res = await fetch(API + '/parent/children/' + token);
+    const data = await res.json();
+    if (data.children && data.children.length > 0) {
+      list.innerHTML = data.children.map(c => `<div class="child-card"><div class="child-avatar">${c.name[0].toUpperCase()}</div><div class="child-info"><h3>${c.name}</h3><p>Age: ${c.age} years old</p></div></div>`).join('');
+    } else {
+      list.innerHTML = '<p style="color:var(--muted);text-align:center;padding:20px">No children added yet! 👇</p>';
+    }
+  } catch(e) { list.innerHTML = ''; }
+}
+
+async function checkVideo() {
+  hideError('video-error');
+  const title = document.getElementById('video-title').value.trim();
+  const desc = document.getElementById('video-desc').value.trim();
+  const age = parseInt(document.getElementById('video-age').value);
+  if (!title || !desc || !age) return showError('video-error', 'Please fill all fields!');
+  const btn = document.ge
